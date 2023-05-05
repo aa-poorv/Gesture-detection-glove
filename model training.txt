@@ -1,0 +1,169 @@
+steady1 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\steady\steady1.mat');
+steady2 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\steady\steady2.mat');
+
+bye1 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\bye\bye bye.mat');
+bye2 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\bye\bye bye2.mat');
+bye3 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\bye\bye bye3.mat');
+bye4 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\bye\bye bye4.mat');
+bye5 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\bye\bye bye5.mat');
+bye6 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\bye\bye bye6.mat');
+
+india1 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\india\india.mat');
+india2 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\india\india2.mat');
+india3 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\india\india3.mat');
+india4 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\india\india4.mat');
+india5 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\india\india5.mat');
+india6 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\india\india6.mat');
+
+me1 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\me\me(I).mat');
+me2 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\me\me2.mat');
+me3 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\me\me3.mat');
+me4 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\me\me4.mat');
+me5 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\me\me5.mat');
+me6 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\me\me6.mat');
+
+sorry1 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\sorry\sorry.mat');
+sorry2 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\sorry\sorry2.mat');
+sorry3 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\sorry\sorry3.mat');
+sorry4 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\sorry\sorry4.mat');
+sorry5 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\sorry\sorry5.mat');
+sorry6 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\sorry\sorry6.mat');
+
+women1 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\women\women.mat');
+women2 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\women\women2.mat');
+women3 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\women\women3.mat');
+women4 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\women\women4.mat');
+women5 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\women\women5.mat');
+women6 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\women\women6.mat');
+
+thank1 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\thank you\thank1.mat');
+thank2 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\thank you\thank2.mat');
+thank3 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\thank you\thank3.mat');
+thank4 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\thank you\thank4.mat');
+thank5 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\thank you\thank5.mat');
+thank6 = importdata('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\thank you\thank6.mat');
+
+
+steady = [steady1, steady2];
+bye = [bye1, bye2, bye3, bye4, bye5, bye6];
+india = [india1, india2, india3, india4, india5, india6];
+me = [me1, me2, me3, me4, me5, me6];
+sorry = [sorry1, sorry2, sorry3, sorry4, sorry5, sorry6];
+women = [women1, women2, women3, women4, women5, women6];
+thank = [thank1, thank2, thank3, thank4, thank5, thank6];
+
+fs = 200; % sampling frequency
+fc = 10; % cutoff frequency
+[b, a] = butter(2, fc/(fs/2), 'low');
+
+for i = 1:600
+
+    temp1 = filtfilt(b, a, bye{1, i});
+    bye{1,i} = temp1;
+
+    temp2 = filtfilt(b, a, india{1, i});
+    india{1,i} = temp2;
+
+    temp3 = filtfilt(b, a, me{1, i});
+    me{1, i} = temp3;
+
+    temp4 = filtfilt(b, a, sorry{1, i});
+    sorry{1, i} = temp4;
+
+    temp5 = filtfilt(b, a, steady{1, i});
+    steady{1, i} = temp5;
+
+    temp6 = filtfilt(b, a, women{1, i});
+    women{1, i} = temp6;
+    
+    temp7 = filtfilt(b, a, thank{1, i});
+    thank{1, i} = temp7;
+
+
+end
+
+st1 = cellfun(@mean,steady','UniformOutput',false);
+st2 = cellfun(@std,steady','UniformOutput',false);
+steadyObs = cell2mat([st1,st2]);
+steadyLabel = 0*ones(600,1);
+
+f1 = cellfun(@mean,bye','UniformOutput',false);
+f2 = cellfun(@std,bye','UniformOutput',false);
+byeObs = cell2mat([f1,f2]);
+byeLabel = 1*ones(600,1);
+
+i1 = cellfun(@mean,india','UniformOutput',false);
+i2 = cellfun(@std,india','UniformOutput',false);
+indiaObs = cell2mat([i1,i2]);
+indiaLabel = 2*ones(600,1);
+
+me1 = cellfun(@mean,me','UniformOutput',false);
+me2 = cellfun(@std,me','UniformOutput',false);
+meObs = cell2mat([me1,me2]);
+meLabel = 3*ones(600,1);
+
+s1 = cellfun(@mean,sorry','UniformOutput',false);
+s2 = cellfun(@std,sorry','UniformOutput',false);
+sorryObs = cell2mat([s1,s2]);
+sorryLabel = 4*ones(600,1);
+
+wom1 = cellfun(@mean,women','UniformOutput',false);
+wom2 = cellfun(@std,women','UniformOutput',false);
+womenObs = cell2mat([wom1,wom2]);
+womenLabel = 5*ones(600,1);
+
+t1 = cellfun(@mean,thank','UniformOutput',false);
+t2 = cellfun(@std,thank','UniformOutput',false);
+thankObs = cell2mat([t1,t2]);
+thankLabel = 6*ones(600,1);
+
+
+X = [byeObs; indiaObs; meObs; sorryObs; steadyObs; womenObs; thankObs];
+Y = [byeLabel; indiaLabel; meLabel; sorryLabel; steadyLabel; womenLabel; thankLabel];
+
+
+rng('default') % For reproducibility
+Partition = cvpartition(Y,'Holdout',0.30);
+trainingInds = training(Partition);
+XTrain = X(trainingInds,:);
+YTrain = Y(trainingInds);
+testInds = test(Partition); % Indices for the test set
+XTest = X(testInds,:);
+YTest = Y(testInds);
+
+
+
+tree = fitctree(XTrain,YTrain);
+
+knnMD = fitcknn(XTrain,YTrain, 'NumNeighbors', 5);
+
+svm = fitcecoc(XTrain,YTrain, 'Learners', 'svm', 'OptimizeHyperparameters', 'auto');
+
+
+partitionedModeltree = crossval(tree,'KFold',5);
+partitionedModelsvm = crossval(svm,'KFold',5);
+partitionedModelknn = crossval(knnMD,'KFold',5);
+
+
+validationAccuracyTree = 1-kfoldLoss(partitionedModeltree);
+validationAccuracysvm = 1-kfoldLoss(partitionedModelsvm);
+validationAccuracyknn = 1-kfoldLoss(partitionedModelknn);
+
+pred_tree = predict(tree, XTest);
+pred_svm = predict(svm, XTest);
+pred_knn = predict(knnMD,XTest);
+
+% Compute classification accuraciesknn
+acc_tree = sum(pred_tree == YTest) / numel(YTest);
+acc_svm = sum(pred_svm == YTest) / numel(YTest);
+acc_knn = sum(pred_knn == YTest) / numel(YTest);
+
+
+testAccuracy1 = 1-loss(tree,XTest, YTest );
+testAccuracy2 = 1-loss(knnMD,XTest, YTest );
+%testAccuracy3 = 1-loss(svm,XTest, YTest );
+
+
+save('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\models_training\treeMDL.mat', 'tree');
+%save('svmMDL.mat', 'svm');
+save('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\models_training\knnMDL.mat', 'knnMD');

@@ -1,0 +1,111 @@
+const int flex1  = A1;
+const int flex2  = A2;
+const int flex3  = A3;
+const int flex4  = A4;
+const int flex5  = A5;
+
+int finger1;
+int finger2;
+int finger3;
+int finger4;
+int finger5;
+
+int val1;
+int val2;
+int val3;
+int val4;
+int val5;
+
+String result;
+
+void setup() {
+ Serial.begin(9600);
+
+}
+
+void loop() {
+  delay(500);
+  int finger1 = analogRead(flex1);
+  int finger2 = analogRead(flex2);
+  int finger3 = analogRead(flex3);
+  int finger4 = analogRead(flex4);
+  int finger5 = analogRead(flex5);
+
+  result = String(finger1) +"   "+ String(finger2) +"   "+ String(finger3) +"   "+ String(finger4) +"   "+  String(finger5);
+
+  Serial.println(result);
+
+
+  val1 = fig5(finger1);
+  val2 = fig4(finger2);
+  val3 = fig3(finger3);
+  val4 = fig2(finger4);
+  val5 = fig1(finger5);
+
+  if( val1 == 0 && val2 == 1 && val3 == 1 && val4 == 1 && val5 == 1)
+  {
+    Serial.println(" One ");
+  }
+  if( val1 == 1 && val2 == 0 && val3 == 1 && val4 == 1 && val5 == 1)
+  {
+    //Serial.println(" Two ");
+  }
+   if( val1 == 1 && val2 == 1 && val3 == 0 && val4 == 1 && val5 == 1)
+  {
+    Serial.println(" Three ");
+  }
+  if( val1 == 1 && val2 == 1 && val3 == 1 && val4 == 0 && val5 == 1)
+  {
+    Serial.println(" Four ");
+  }
+  if( val1 == 1 && val2 == 1 && val3 == 0 && val4 == 1 && val5 == 0)
+  {
+    Serial.println(" Five ");
+  }
+}
+
+int fig1(int val)
+{
+  if(val <150)
+  {
+    return 0;
+  }
+  else
+  return 1;
+}
+int fig2(int val)
+{
+  if(val <200)
+  {
+    return 0;
+  }
+  else
+  {return 1;}
+}
+int fig3(int val)
+{
+  if(val <179)
+  {
+    return 0;
+  }
+  else
+  return 1;
+}
+int fig4(int val)
+{
+  if(val <152)
+  {
+    return 0;
+  }
+  else
+  return 1;
+}
+int fig5(int val)
+{
+  if(val <865)
+  {
+    return 0;
+  }
+  else
+  return 1;
+}

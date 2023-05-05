@@ -1,0 +1,24 @@
+function [r] = capture1
+
+gesture = 300 ;
+
+a = arduino();
+% r{1,1} = 1;
+
+imu = mpu6050(a,'OutputFormat', 'matrix', 'SamplesPerRead', 200);
+disp('update server. Start capturing data');
+
+for ind = 1:gesture
+    disp("Gesture");
+    
+    [accel, gyro] = imu.read;
+    % f1 = readDigitalPin(a,'D2');
+    % f2 = readDigitalPin(a,'D3');
+    % f3 = readDigitalPin(a,'D4');
+    % f4 = readDigitalPin(a,'D5');
+    % fing = [f1, f2, f3, f4];
+    flex = [accel, gyro];
+    r{1, ind} = flex;
+    disp(ind);
+    %pause(1.2);
+    end

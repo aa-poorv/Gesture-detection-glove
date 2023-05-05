@@ -1,0 +1,55 @@
+close all;
+clear;
+load('C:\Users\mahod\OneDrive\Desktop\IMU\dataset\models_training\knnMDL.mat');
+
+a = arduino();
+imu_sensor = mpu6050(a,'SampleRate',200,'OutputFormat', 'matrix', 'SamplesPerRead', 200);
+
+fs = 200; % sampling frequency
+fc = 10; % cutoff frequency
+[b, a] = butter(2, fc/(fs/2), 'low');
+figure;
+
+while(true)
+    
+    
+   [accel, gyro] = imu_sensor.read;
+   gesture = [accel, gyro];
+   gesture = filtfilt(b, a, gesture);
+    
+   %data = reshape(gesture, [1 1 size(gesture)]);
+
+   g1 = mean(gesture);
+   g2 = std(gesture);
+
+   ges = [g1,g2];
+   % ges = [g1,g2]';
+   % 
+    % g1 = cellfun(@mean,ge1,'UniformOutput',false);
+    % g2 = cellfun(@std,ge1,'UniformOutput',false);
+    % ges = cell2mat([g1,g2]);
+   
+   prediction = predict(knnMD, ges);
+    
+   %disp(prediction);
+
+   if(prediction == 0)
+       disp("Steady");
+   elseif(prediction == 1)
+        disp("Bye Bye");
+   elseif(prediction == 2)
+        disp("India");
+   elseif(prediction == 3)
+        disp("I / ME");
+   elseif(prediction == 4)
+        disp("Sorry");
+   elseif(prediction == 5)
+        disp("Women");
+   elseif(prediction == 6)
+        disp("Thank You");
+   end
+
+   plot(ges);
+   pause(0.01);
+    
+end
